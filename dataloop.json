@@ -1,0 +1,172 @@
+{
+    "name": "mmpose",
+    "displayName": "MMPose Model",
+    "version": "0.2.6",
+    "scope": "public",
+    "description": "MMPose Model Application by OpenMMLab",
+    "attributes": {
+      "Provider": "OpenMMLab",
+      "Category": "Model",
+      "Computer Vision": "Object Detection",
+      "License": "Apache 2.0",
+      "Media Type": [
+        "Image"
+      ],
+      "Deployed By": "Dataloop"
+    },
+    "codebase": {
+      "type": "git",
+      "gitUrl": "https://github.com/dataloop-ai-apps/mmpose-adapter.git",
+      "gitTag": "0.2.6"
+    },
+    "components": {
+      "computeConfigs": [
+        {
+          "name": "mmpose-deploy",
+          "runtime": {
+            "podType": "highmem-xs",
+            "concurrency": 1,
+            "runnerImage": "gcr.io/viewo-g/piper/agent/runner/gpu/mmpose-adapter:0.2.6",
+            "autoscaler": {
+              "type": "rabbitmq",
+              "minReplicas": 0,
+              "maxReplicas": 2
+            }
+          }
+        }
+      ],
+      "modules": [
+        {
+          "name": "mmpose-module",
+          "entryPoint": "model_adapter.py",
+          "className": "MMDetection",
+          "computeConfig": "mmpose-deploy",
+          "description": "MMDetection Module",
+          "initInputs": [
+            {
+              "type": "Model",
+              "name": "model_entity"
+            }
+          ],
+          "functions": [
+            {
+              "name": "evaluate_model",
+              "input": [
+                {
+                  "type": "Model",
+                  "name": "model",
+                  "description": "Dataloop Model Entity"
+                },
+                {
+                  "type": "Dataset",
+                  "name": "dataset",
+                  "description": "Dataloop Dataset Entity"
+                },
+                {
+                  "type": "Json",
+                  "name": "filters",
+                  "description": "Dataloop Filter DQL"
+                }
+              ],
+              "output": [
+                {
+                  "type": "Model",
+                  "name": "model",
+                  "description": "Dataloop Model Entity"
+                },
+                {
+                  "type": "Dataset",
+                  "name": "dataset",
+                  "description": "Dataloop Dataset Entity"
+                }
+              ],
+              "displayName": "Evaluate a Model",
+              "displayIcon": "",
+              "description": "Function to evaluate MMPose model performance"
+            },
+            {
+              "name": "predict_items",
+              "input": [
+                {
+                  "type": "Item[]",
+                  "name": "items",
+                  "description": "List of items to run inference on"
+                }
+              ],
+              "output": [
+                {
+                  "type": "Item[]",
+                  "name": "items",
+                  "description": "The same input images for prediction."
+                },
+                {
+                  "type": "Annotation[]",
+                  "name": "annotations",
+                  "description": "List of annotations"
+                }
+              ],
+              "displayName": "Predict Items",
+              "displayIcon": "",
+              "description": "MMPose predict function"
+            },
+            {
+              "name": "predict_dataset",
+              "input": [
+                {
+                  "type": "Dataset",
+                  "name": "dataset",
+                  "description": "The input dataset of the items required for prediction."
+                },
+                {
+                  "type": "Json",
+                  "name": "filters",
+                  "description": "The DQL in json format to get all the items required for prediction."
+                }
+              ],
+              "output": [],
+              "displayName": "Predict Dataset",
+              "displayIcon": "",
+              "description": "Inference function of the model on a dataset."
+            }
+          ]
+        }
+      ],
+      "models": [
+        {
+          "name": "mmlab-mmpose",
+          "moduleName": "mmpose-module",
+          "scope": "project",
+          "status": "pre-trained",
+          "configuration": {
+            "pose_model_name": "td-hm_hrnet-w48_8xb32-210e_coco-256x192",
+            "pose_config_file": "td-hm_hrnet-w48_8xb32-210e_coco-256x192.py",
+            "pose_checkpoint_file": "td-hm_hrnet-w48_8xb32-210e_coco-256x192-0e67c616_20220913.pth",
+            "mmdet_model_name": "rtmdet_tiny_8xb32-300e_coco",
+            "mmdet_config_file": "rtmdet_tiny_8xb32-300e_coco.py",
+            "mmdet_checkpoint_file": "rtmdet_tiny_8xb32-300e_coco_20220902_112414-78e30dcc.pth"
+          },
+          "description": "MMDetection is an open source object detection toolbox based on PyTorch. It is a part of the OpenMMLab project.",
+          "labels": [
+            "mmpose-human",
+            "nose",
+            "left_eye",
+            "right_eye",
+            "left_ear",
+            "right_ear",
+            "left_shoulder",
+            "right_shoulder",
+            "left_elbow",
+            "right_elbow",
+            "left_wrist",
+            "right_wrist",
+            "left_hip",
+            "right_hip",
+            "left_knee",
+            "right_knee",
+            "left_ankle",
+            "right_ankle"
+          ]
+        }
+      ]
+    }
+  }
