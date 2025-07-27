@@ -1,0 +1,176 @@
+{
+  "title": "test-ontology",
+  "roots": [
+    {
+      "value": {
+        "tag": "left_hip",
+        "displayLabel": "left_hip",
+        "color": "#ff0000",
+        "attributes": [],
+        "displayData": {}
+      },
+      "children": []
+    },
+    {
+      "value": {
+        "tag": "right_hip",
+        "displayLabel": "right_hip",
+        "color": "#00ff4a",
+        "attributes": [],
+        "displayData": {}
+      },
+      "children": []
+    },
+    {
+      "value": {
+        "tag": "left_eye",
+        "displayLabel": "left_eye",
+        "color": "#9500ff",
+        "attributes": [],
+        "displayData": {}
+      },
+      "children": []
+    },
+    {
+      "value": {
+        "tag": "right_eye",
+        "displayLabel": "right_eye",
+        "color": "#ffdf00",
+        "attributes": [],
+        "displayData": {}
+      },
+      "children": []
+    },
+    {
+      "value": {
+        "tag": "right_ear",
+        "displayLabel": "right_ear",
+        "color": "#00d4ff",
+        "attributes": [],
+        "displayData": {}
+      },
+      "children": []
+    },
+    {
+      "value": {
+        "tag": "left_elbow",
+        "displayLabel": "left_elbow",
+        "color": "#ff008a",
+        "attributes": [],
+        "displayData": {}
+      },
+      "children": []
+    },
+    {
+      "value": {
+        "tag": "nose",
+        "displayLabel": "nose",
+        "color": "#40ff00",
+        "attributes": [],
+        "displayData": {}
+      },
+      "children": []
+    },
+    {
+      "value": {
+        "tag": "left_wrist",
+        "displayLabel": "left_wrist",
+        "color": "#0b00ff",
+        "attributes": [],
+        "displayData": {}
+      },
+      "children": []
+    },
+    {
+      "value": {
+        "tag": "right_ankle",
+        "displayLabel": "right_ankle",
+        "color": "#ff5500",
+        "attributes": [],
+        "displayData": {}
+      },
+      "children": []
+    },
+    {
+      "value": {
+        "tag": "right_shoulder",
+        "displayLabel": "right_shoulder",
+        "color": "#00ffa0",
+        "attributes": [],
+        "displayData": {}
+      },
+      "children": []
+    },
+    {
+      "value": {
+        "tag": "left_ear",
+        "displayLabel": "left_ear",
+        "color": "#ea00ff",
+        "attributes": [],
+        "displayData": {}
+      },
+      "children": []
+    },
+    {
+      "value": {
+        "tag": "right_wrist",
+        "displayLabel": "right_wrist",
+        "color": "#caff00",
+        "attributes": [],
+        "displayData": {}
+      },
+      "children": []
+    },
+    {
+      "value": {
+        "tag": "right_elbow",
+        "displayLabel": "right_elbow",
+        "color": "#007fff",
+        "attributes": [],
+        "displayData": {}
+      },
+      "children": []
+    },
+    {
+      "value": {
+        "tag": "left_ankle",
+        "displayLabel": "left_ankle",
+        "color": "#ff0035",
+        "attributes": [],
+        "displayData": {}
+      },
+      "children": []
+    },
+    {
+      "value": {
+        "tag": "left_knee",
+        "displayLabel": "left_knee",
+        "color": "#00ff16",
+        "attributes": [],
+        "displayData": {}
+      },
+      "children": []
+    },
+    {
+      "value": {
+        "tag": "left_shoulder",
+        "displayLabel": "left_shoulder",
+        "color": "#6000ff",
+        "attributes": [],
+        "displayData": {}
+      },
+      "children": []
+    },
+    {
+      "value": {
+        "tag": "right_knee",
+        "displayLabel": "right_knee",
+        "color": "#ffab00",
+        "attributes": [],
+        "displayData": {}
+      },
+      "children": []
+    }
+  ],
+  "metadata": {}
+}
