@@ -47,7 +47,7 @@ Image → RTMDet (Person Detection) → HRNet (Pose Estimation) → COCO Keypoin
   17. right_ankle
 
 - Recipe:
-  1. Include a template with all labels and name `mmpose`
+  1. Include a template with all labels and name `mmpose-model`
 
 **For reference Please review [Ontology Example](assets/ontology_example.json) and [Recipe Example](assets/recipe_example.json)**
 
