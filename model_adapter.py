@@ -82,7 +82,7 @@ class MMDetection(dl.BaseModelAdapter):
         logger.info(f"Predicting on batch of {len(batch)} images")
         try:
             item, image = batch[0]
-            recipe = item.dataset.recipes.list()[0]
+            recipe: dl.Recipe = item.dataset.recipes.list()[0]
             template_id = recipe.get_annotation_template_id(template_name="mmpose-human")
         except Exception as e:
             print(e)
@@ -102,13 +102,17 @@ class MMDetection(dl.BaseModelAdapter):
             labels = data_samples.metainfo.get("flip_indices", list())
             confidence_samples = data_samples.pred_instances.keypoint_scores
             for pose_annotation, confidence_sample in zip(pose_annotations, confidence_samples):
-                dl_pose_annotation = dl.Pose(label="mmpose-model", template_id=template_id)
-                parent_annotation = item.annotations.upload(
-                    dl.Annotation.new(annotation_definition=dl_pose_annotation)
-                )[0]
+                if template_id is not None:
+                    dl_pose_annotation = dl.Pose(label="mmpose-model", template_id=template_id)
+                    parent_annotation = item.annotations.upload(
+                        dl.Annotation.new(annotation_definition=dl_pose_annotation)
+                    )[0]
+                else:
+                    parent_annotation = None
                 for point, label_id, confidence in zip(pose_annotation, labels, confidence_sample):
+                    parent_id = parent_annotation.id if parent_annotation is not None else None
                     image_annotations.add(
-                        parent_id=parent_annotation.id,
+                        parent_id=parent_id,
                         annotation_definition=dl.Point(
                             x=point[0], y=point[1], label=self.pose_model.dataset_meta.get("keypoint_id2name")[label_id]
                         ),
