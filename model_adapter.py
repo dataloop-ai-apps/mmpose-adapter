@@ -84,10 +84,10 @@ class MMDetection(dl.BaseModelAdapter):
             item, image = batch[0]
             recipe: dl.Recipe = item.dataset.recipes.list()[0]
             template_id = recipe.get_annotation_template_id(template_name="mmpose-human")
+            logger.info(f"Found annotation template 'mmpose-human' with id: {template_id}")
         except Exception as e:
-            print(e)
+            logger.warning(f"Annotation template 'mmpose-human' not found, skipping pose parent annotations: {e}")
             template_id = None
-        print(template_id)
         batch_annotations = list()
         for item, image in batch:
             image_annotations = dl.AnnotationCollection()
@@ -107,7 +107,9 @@ class MMDetection(dl.BaseModelAdapter):
                     parent_annotation = item.annotations.upload(
                         dl.Annotation.new(annotation_definition=dl_pose_annotation)
                     )[0]
+                    logger.debug(f"Uploaded pose parent annotation: {parent_annotation.id}")
                 else:
+                    logger.debug("No template_id available, skipping pose parent annotation")
                     parent_annotation = None
                 for point, label_id, confidence in zip(pose_annotation, labels, confidence_sample):
                     parent_id = parent_annotation.id if parent_annotation is not None else None
