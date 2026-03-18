@@ -1,21 +1,21 @@
 FROM hub.dataloop.ai/dtlpy-runner-images/gpu:python3.10_cuda11.8_pytorch2
 
-USER root
-# Install the required packages
-RUN apt-get update \
-    && apt-get install -y ffmpeg libsm6 libgl1-mesa-glx libxext6 git ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6 \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# Base image has torch 2.9.1+cu128, but mmcv 2.2.0 only has pre-built wheels up to torch 2.4.0
+RUN ${DL_PYTHON_EXECUTABLE} -m pip install torch==2.4.0 torchvision==0.19.0 torchaudio==2.4.0 --index-url https://download.pytorch.org/whl/cu118
+# Base image setuptools 80.9 removed pkg_resources (needed by mmengine)
+RUN ${DL_PYTHON_EXECUTABLE} -m pip install openmim==0.3.9 "setuptools<78"
 
-RUN pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
-# Install MMEngine and MMCV
-RUN pip install openmim==0.3.9
+RUN ${DL_PYTHON_EXECUTABLE} -m pip install "mmengine==0.10.7"
+RUN ${DL_PYTHON_EXECUTABLE} -m pip install mmcv==2.2.0 -f https://download.openmmlab.com/mmcv/dist/cu118/torch2.4.0/index.html
+RUN ${DL_PYTHON_EXECUTABLE} -m pip install chumpy --no-build-isolation
+RUN ${DL_PYTHON_EXECUTABLE} -m pip install "mmdet==3.3.0" "mmpose==1.3.2"
 
+# Patch mmdet to accept mmcv 2.2.0 (upstream cap is <2.2.0)
+RUN MMDET_INIT=$(${DL_PYTHON_EXECUTABLE} -c "import importlib.util; print(importlib.util.find_spec('mmdet').submodule_search_locations[0] + '/__init__.py')") \
+    && sed -i "s/mmcv_maximum_version = '2.2.0'/mmcv_maximum_version = '2.3.0'/" "$MMDET_INIT"
 
-USER 1000
+# Base image opencv 4.11 has binary incompatibility with xtcocotools
+RUN ${DL_PYTHON_EXECUTABLE} -m pip install "opencv-python<4.10"
 
-RUN mim install "mmengine>=0.10.7" "mmcv==2.0.0rc4" "mmdet==3.0.0" "mmpose==1.0.0"
-RUN pip install numpy --upgrade
-
-# docker build -t gcr.io/viewo-g/piper/agent/runner/gpu/mmpose-adapter:0.2.6 -f Dockerfile .
-# docker push gcr.io/viewo-g/piper/agent/runner/gpu/mmpose-adapter:0.2.6
+# docker build -t gcr.io/viewo-g/piper/agent/runner/gpu/mmpose-adapter:0.2.7 -f Dockerfile .
+# docker push gcr.io/viewo-g/piper/agent/runner/gpu/mmpose-adapter:0.2.7

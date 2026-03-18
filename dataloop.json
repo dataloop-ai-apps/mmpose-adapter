@@ -26,7 +26,7 @@
           "runtime": {
             "podType": "highmem-xs",
             "concurrency": 1,
-            "runnerImage": "gcr.io/viewo-g/piper/agent/runner/gpu/mmpose-adapter:0.2.6",
+            "runnerImage": "gcr.io/viewo-g/piper/agent/runner/apps/mmpose-adapter:0.2.7",
             "autoscaler": {
               "type": "rabbitmq",
               "minReplicas": 0,
