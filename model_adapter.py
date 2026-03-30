@@ -8,6 +8,7 @@ from mmpose.apis import init_model as init_pose_estimator
 from mmpose.evaluation.functional import nms
 from mmpose.structures import merge_data_samples
 from mmdet.apis import init_detector, inference_detector
+from mmengine.registry import DefaultScope
 import numpy as np
 from PIL import Image
 
@@ -91,6 +92,9 @@ class MMDetection(dl.BaseModelAdapter):
         batch_annotations = list()
         for item, image in batch:
             image_annotations = dl.AnnotationCollection()
+            scope = DefaultScope.get_current_instance()
+            if scope is not None:
+                scope._scope_name = 'mmdet'
             det_result = inference_detector(self.model, image)
             pred_instance = det_result.pred_instances.cpu().numpy()
             bboxes = np.concatenate((pred_instance.bboxes, pred_instance.scores[:, None]), axis=1)
